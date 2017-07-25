@@ -16,9 +16,10 @@ eval export ${LIBRARY_SEARCH_VAR}="${PREFIX}/lib"
 # Build LAPACK.
 # Enable threading. This can be controlled to a certain number by
 # setting OPENBLAS_NUM_THREADS before loading the library.
-make QUIET_MAKE=1 DYNAMIC_ARCH=1 BINARY=${ARCH} NO_LAPACK=0 NO_AFFINITY=1 USE_THREAD=1 CFLAGS="${CF}" FFLAGS="-frecursive"
+make QUIET_MAKE=1 DYNAMIC_ARCH=1 BINARY=${ARCH} NO_LAPACK=1 NO_AFFINITY=1 USE_THREAD=1 CFLAGS="${CF}" FFLAGS="-frecursive"
 # Fix paths to ensure they have the $PREFIX in them.
 if [[ `uname` == 'Darwin' ]]; then
+    otool -L ${PREFIX}/lib/libopenblas.dylib
     for OPENBLAS_LIB in $( find "${PREFIX}/lib" -name "libopenblas*.dylib" ); do
         install_name_tool -change \
                 @rpath/./libgfortran.3.dylib \
@@ -33,6 +34,7 @@ if [[ `uname` == 'Darwin' ]]; then
                 "${PREFIX}/lib/libgcc_s.1.dylib" \
                 "${OPENBLAS_LIB}"
     done
+    otool -L ${PREFIX}/lib/libopenblas.dylib
 fi
 OPENBLAS_NUM_THREADS=$CPU_COUNT make test
 make install PREFIX="${PREFIX}"
