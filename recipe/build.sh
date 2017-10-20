@@ -16,7 +16,7 @@ eval export ${LIBRARY_SEARCH_VAR}="${PREFIX}/lib"
 # Build LAPACK.
 # Enable threading. This can be controlled to a certain number by
 # setting OPENBLAS_NUM_THREADS before loading the library.
-make QUIET_MAKE=1 DYNAMIC_ARCH=1 BINARY=${ARCH} NO_LAPACK=1 NO_AFFINITY=1 USE_THREAD=1 CFLAGS="${CF}" FFLAGS="-frecursive"
+make VERBOSE=1 QUIET_MAKE=1 DYNAMIC_ARCH=1 BINARY=${ARCH} NO_LAPACK=1 NO_AFFINITY=1 USE_THREAD=1 CFLAGS="${CF}" FFLAGS="-frecursive"
 make install PREFIX="${PREFIX}"
 # Fix paths to ensure they have the $PREFIX in them.
 if [[ `uname` == 'Darwin' ]]; then
